@@ -106,85 +106,97 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;type_traits&gt;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;cstddef&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="codeRef" href="https://tatami-inc.github.io/tatami/tatami_8hpp.html">tatami/tatami.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="codeRef" href="https://libscran.github.io/knncolle/knncolle_8hpp.html">knncolle/knncolle.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceknncolle__tatami.html">knncolle_tatami</a> {</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> KData_, <span class="keyword">typename</span> TValue_, <span class="keyword">typename</span> TIndex_, <span class="keyword">class</span> Extractor_ = tatami::OracularDenseExtractor&lt;TValue_, TIndex_&gt; &gt;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">class </span>Extractor final : <span class="keyword">public</span> <a class="code hl_classRef" href="https://libscran.github.io/knncolle/classknncolle_1_1MatrixExtractor.html">knncolle::MatrixExtractor</a>&lt;KData_&gt; {</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    Extractor(std::unique_ptr&lt;Extractor_&gt; ext, TIndex_ ndim) : my_ext(std::move(ext)) {</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        <a class="code hl_functionRef" href="https://tatami-inc.github.io/tatami/namespacetatami.html#a61b43d2b751c7fcca6815f3be929d4d3">tatami::resize_container_to_Index_size</a>(my_buffer, ndim); </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        <span class="keywordflow">if</span> <span class="keyword">constexpr</span>(!same_type) {</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>            <a class="code hl_functionRef" href="https://tatami-inc.github.io/tatami/namespacetatami.html#a61b43d2b751c7fcca6815f3be929d4d3">tatami::resize_container_to_Index_size</a>(my_output, ndim); </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        }</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    }</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    std::unique_ptr&lt;Extractor_&gt; my_ext;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    std::vector&lt;TValue_&gt; my_buffer;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> same_type = std::is_same&lt;TValue_, KData_&gt;::value;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keyword">typename</span> std::conditional&lt;same_type, bool, std::vector&lt;KData_&gt; &gt; my_output;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keyword">const</span> KData_* next() {</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        <span class="keyword">auto</span> ptr = my_ext-&gt;fetch(my_buffer.data());</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordflow">if</span> <span class="keyword">constexpr</span>(same_type) {</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>            <span class="keywordflow">return</span> ptr;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>            std::copy_n(ptr, my_buffer.size(), my_output.data());</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            <span class="keywordflow">return</span> my_output.data();</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        }</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    }</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>};</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> KIndex_, <span class="keyword">typename</span> KData_, <span class="keyword">typename</span> TValue_, <span class="keyword">typename</span> TIndex_, <span class="keyword">class</span> MatrixPo<span class="keywordtype">int</span>er_ = std::shared_ptr&lt;const tatami::Matrix&lt;TValue_, TIndex_&gt; &gt; &gt;</div>
-<div class="foldopen" id="foldopen00071" data-start="{" data-end="};">
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="classknncolle__tatami_1_1Matrix.html">   71</a></span><span class="keyword">class </span><a class="code hl_class" href="classknncolle__tatami_1_1Matrix.html">Matrix</a> final : <span class="keyword">public</span> <a class="code hl_classRef" href="https://libscran.github.io/knncolle/classknncolle_1_1Matrix.html">knncolle::Matrix</a>&lt;KIndex_, KData_&gt; {</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    MatrixPointer_ my_matrix;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="keyword">public</span>:</div>
-<div class="foldopen" id="foldopen00079" data-start="{" data-end="}">
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="classknncolle__tatami_1_1Matrix.html#a0d1cfe54ac26ace77434016b739ec970">   79</a></span>    <a class="code hl_function" href="classknncolle__tatami_1_1Matrix.html#a0d1cfe54ac26ace77434016b739ec970">Matrix</a>(MatrixPointer_  matrix) : my_matrix(std::move(matrix)) {</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <span class="comment">// Making sure that we can cast to Index_.</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        <span class="comment">// tatami extents are guaranteed to be positive and fit in a size_t, so we attest that.</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        sanisizer::cast&lt;KIndex_&gt;(sanisizer::attest_gez(sanisizer::attest_max_by_type&lt;std::size_t&gt;(my_matrix-&gt;ncol())));</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    }</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="codeRef" href="https://tatami-inc.github.io/tatami/tatami_8hpp.html">tatami/tatami.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="codeRef" href="https://libscran.github.io/knncolle/knncolle_8hpp.html">knncolle/knncolle.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceknncolle__tatami.html">knncolle_tatami</a> {</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> KData_, <span class="keyword">typename</span> TValue_, <span class="keyword">typename</span> TIndex_, <span class="keyword">class</span> Extractor_ = tatami::OracularDenseExtractor&lt;TValue_, TIndex_&gt; &gt;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">class </span>Extractor final : <span class="keyword">public</span> <a class="code hl_classRef" href="https://libscran.github.io/knncolle/classknncolle_1_1MatrixExtractor.html">knncolle::MatrixExtractor</a>&lt;KData_&gt; {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    Extractor(std::unique_ptr&lt;Extractor_&gt; ext, TIndex_ ndim) : my_ext(std::move(ext)) {</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        <a class="code hl_functionRef" href="https://tatami-inc.github.io/tatami/namespacetatami.html#a61b43d2b751c7fcca6815f3be929d4d3">tatami::resize_container_to_Index_size</a>(my_buffer, ndim); </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        <span class="keywordflow">if</span> <span class="keyword">constexpr</span>(!same_type) {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            <a class="code hl_functionRef" href="https://tatami-inc.github.io/tatami/namespacetatami.html#a61b43d2b751c7fcca6815f3be929d4d3">tatami::resize_container_to_Index_size</a>(my_output, ndim); </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        }</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    }</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    std::unique_ptr&lt;Extractor_&gt; my_ext;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    std::vector&lt;TValue_&gt; my_buffer;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> same_type = std::is_same&lt;TValue_, KData_&gt;::value;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keyword">typename</span> std::conditional&lt;same_type, bool, std::vector&lt;KData_&gt; &gt; my_output;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keyword">const</span> KData_* next() {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keyword">auto</span> ptr = my_ext-&gt;fetch(my_buffer.data());</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <span class="keywordflow">if</span> <span class="keyword">constexpr</span>(same_type) {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>            <span class="keywordflow">return</span> ptr;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            std::copy_n(ptr, my_buffer.size(), my_output.data());</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>            <span class="keywordflow">return</span> my_output.data();</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        }</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    }</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>};</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> KIndex_, <span class="keyword">typename</span> KData_, <span class="keyword">typename</span> TValue_, <span class="keyword">typename</span> TIndex_, <span class="keyword">class</span> MatrixPo<span class="keywordtype">int</span>er_ = std::shared_ptr&lt;const tatami::Matrix&lt;TValue_, TIndex_&gt; &gt; &gt;</div>
+<div class="foldopen" id="foldopen00072" data-start="{" data-end="};">
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="classknncolle__tatami_1_1Matrix.html">   72</a></span><span class="keyword">class </span><a class="code hl_class" href="classknncolle__tatami_1_1Matrix.html">Matrix</a> final : <span class="keyword">public</span> <a class="code hl_classRef" href="https://libscran.github.io/knncolle/classknncolle_1_1Matrix.html">knncolle::Matrix</a>&lt;KIndex_, KData_&gt; {</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    MatrixPointer_ my_matrix;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    KIndex_ my_nobs;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    std::size_t my_ndim;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordtype">bool</span> my_transposed;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00085" data-start="{" data-end="}">
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="classknncolle__tatami_1_1Matrix.html#a9cf99ba3c30ef55a1a659eafd13d8ed9">   85</a></span>    <a class="code hl_function" href="classknncolle__tatami_1_1Matrix.html#a9cf99ba3c30ef55a1a659eafd13d8ed9">Matrix</a>(MatrixPointer_  matrix, <span class="keywordtype">bool</span> transposed) : my_matrix(std::move(matrix)), my_transposed(transposed) {</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        TIndex_ cur_nobs;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <span class="keywordflow">if</span> (my_transposed) {</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>            cur_nobs = my_matrix-&gt;nrow();</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>            my_ndim = my_matrix-&gt;ncol(); <span class="comment">// cast is guaranteed to be safe as tatami indices can always fit in a size_t.</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>            cur_nobs = my_matrix-&gt;ncol();</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            my_ndim = my_matrix-&gt;nrow();</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        }</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        <span class="comment">// Making sure that we can cast to Index_.</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="comment">// tatami extents are guaranteed to be positive and fit in a size_t, so we attest that.</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        my_nobs = sanisizer::cast&lt;KIndex_&gt;(sanisizer::attest_gez(sanisizer::attest_max_by_type&lt;std::size_t&gt;(cur_nobs)));</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    }</div>
 </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    KIndex_ num_observations()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        <span class="keywordflow">return</span> my_matrix-&gt;ncol();</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    }</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    std::size_t num_dimensions()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        <span class="comment">// tatami extents are guaranteed to fit in a size_t, so it&#39;s okay.</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="keywordflow">return</span> my_matrix-&gt;nrow();</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    }</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    std::unique_ptr&lt;knncolle::MatrixExtractor&lt;KData_&gt; &gt; new_extractor()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="classknncolle__tatami_1_1Matrix.html#a4640cfe6d1e9bb392a7ac6d1f96c4b6a">new_known_extractor</a>();</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    }</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="foldopen" id="foldopen00102" data-start="{" data-end="}">
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="classknncolle__tatami_1_1Matrix.html#a4640cfe6d1e9bb392a7ac6d1f96c4b6a">  102</a></span>    <span class="keyword">auto</span> <a class="code hl_function" href="classknncolle__tatami_1_1Matrix.html#a4640cfe6d1e9bb392a7ac6d1f96c4b6a">new_known_extractor</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        <span class="keyword">auto</span> ext = <a class="code hl_functionRef" href="https://tatami-inc.github.io/tatami/namespacetatami.html#ae5cfcdf9fa34c6d0cd6b672472d407b3">tatami::consecutive_extractor&lt;false, TValue_, TIndex_&gt;</a>(*my_matrix, <span class="keyword">false</span>, 0, my_matrix-&gt;ncol());</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <span class="keywordflow">return</span> std::make_unique&lt;Extractor&lt;KData_, TValue_, TIndex_&gt; &gt;(std::move(ext), my_matrix-&gt;nrow());</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    }</div>
-</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>};</div>
-</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    KIndex_ num_observations()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <span class="keywordflow">return</span> my_nobs;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    }</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    std::size_t num_dimensions()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <span class="keywordflow">return</span> my_ndim;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    }</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>}</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    std::unique_ptr&lt;knncolle::MatrixExtractor&lt;KData_&gt; &gt; new_extractor()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="classknncolle__tatami_1_1Matrix.html#a4640cfe6d1e9bb392a7ac6d1f96c4b6a">new_known_extractor</a>();</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    }</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="foldopen" id="foldopen00116" data-start="{" data-end="}">
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="classknncolle__tatami_1_1Matrix.html#a4640cfe6d1e9bb392a7ac6d1f96c4b6a">  116</a></span>    <span class="keyword">auto</span> <a class="code hl_function" href="classknncolle__tatami_1_1Matrix.html#a4640cfe6d1e9bb392a7ac6d1f96c4b6a">new_known_extractor</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        <span class="keyword">auto</span> ext = <a class="code hl_functionRef" href="https://tatami-inc.github.io/tatami/namespacetatami.html#ae5cfcdf9fa34c6d0cd6b672472d407b3">tatami::consecutive_extractor&lt;false, TValue_, TIndex_&gt;</a>(*my_matrix, my_transposed, 0, my_nobs);</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <span class="keywordflow">return</span> std::make_unique&lt;Extractor&lt;KData_, TValue_, TIndex_&gt; &gt;(std::move(ext), my_ndim);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    }</div>
+</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>};</div>
+</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>}</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassknncolle_1_1MatrixExtractor_html"><div class="ttname"><a href="https://libscran.github.io/knncolle/classknncolle_1_1MatrixExtractor.html">knncolle::MatrixExtractor</a></div></div>
 <div class="ttc" id="aclassknncolle_1_1Matrix_html"><div class="ttname"><a href="https://libscran.github.io/knncolle/classknncolle_1_1Matrix.html">knncolle::Matrix</a></div></div>
-<div class="ttc" id="aclassknncolle__tatami_1_1Matrix_html"><div class="ttname"><a href="classknncolle__tatami_1_1Matrix.html">knncolle_tatami::Matrix</a></div><div class="ttdoc">knncolle-compatible wrapper around a tatami matrix.</div><div class="ttdef"><b>Definition</b> knncolle_tatami.hpp:71</div></div>
-<div class="ttc" id="aclassknncolle__tatami_1_1Matrix_html_a0d1cfe54ac26ace77434016b739ec970"><div class="ttname"><a href="classknncolle__tatami_1_1Matrix.html#a0d1cfe54ac26ace77434016b739ec970">knncolle_tatami::Matrix::Matrix</a></div><div class="ttdeci">Matrix(MatrixPointer_ matrix)</div><div class="ttdef"><b>Definition</b> knncolle_tatami.hpp:79</div></div>
-<div class="ttc" id="aclassknncolle__tatami_1_1Matrix_html_a4640cfe6d1e9bb392a7ac6d1f96c4b6a"><div class="ttname"><a href="classknncolle__tatami_1_1Matrix.html#a4640cfe6d1e9bb392a7ac6d1f96c4b6a">knncolle_tatami::Matrix::new_known_extractor</a></div><div class="ttdeci">auto new_known_extractor() const</div><div class="ttdef"><b>Definition</b> knncolle_tatami.hpp:102</div></div>
+<div class="ttc" id="aclassknncolle__tatami_1_1Matrix_html"><div class="ttname"><a href="classknncolle__tatami_1_1Matrix.html">knncolle_tatami::Matrix</a></div><div class="ttdoc">knncolle-compatible wrapper around a tatami matrix.</div><div class="ttdef"><b>Definition</b> knncolle_tatami.hpp:72</div></div>
+<div class="ttc" id="aclassknncolle__tatami_1_1Matrix_html_a4640cfe6d1e9bb392a7ac6d1f96c4b6a"><div class="ttname"><a href="classknncolle__tatami_1_1Matrix.html#a4640cfe6d1e9bb392a7ac6d1f96c4b6a">knncolle_tatami::Matrix::new_known_extractor</a></div><div class="ttdeci">auto new_known_extractor() const</div><div class="ttdef"><b>Definition</b> knncolle_tatami.hpp:116</div></div>
+<div class="ttc" id="aclassknncolle__tatami_1_1Matrix_html_a9cf99ba3c30ef55a1a659eafd13d8ed9"><div class="ttname"><a href="classknncolle__tatami_1_1Matrix.html#a9cf99ba3c30ef55a1a659eafd13d8ed9">knncolle_tatami::Matrix::Matrix</a></div><div class="ttdeci">Matrix(MatrixPointer_ matrix, bool transposed)</div><div class="ttdef"><b>Definition</b> knncolle_tatami.hpp:85</div></div>
 <div class="ttc" id="aknncolle_8hpp_html"><div class="ttname"><a href="https://libscran.github.io/knncolle/knncolle_8hpp.html">knncolle.hpp</a></div></div>
 <div class="ttc" id="anamespaceknncolle__tatami_html"><div class="ttname"><a href="namespaceknncolle__tatami.html">knncolle_tatami</a></div><div class="ttdoc">Wrapper around a tatami matrix.</div></div>
 <div class="ttc" id="anamespacetatami_html_a61b43d2b751c7fcca6815f3be929d4d3"><div class="ttname"><a href="https://tatami-inc.github.io/tatami/namespacetatami.html#a61b43d2b751c7fcca6815f3be929d4d3">tatami::resize_container_to_Index_size</a></div><div class="ttdeci">void resize_container_to_Index_size(Container_ &amp;container, const Index_ x, Args_ &amp;&amp;... args)</div></div>

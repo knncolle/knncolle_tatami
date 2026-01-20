@@ -20,8 +20,8 @@
       <type></type>
       <name>Matrix</name>
       <anchorfile>classknncolle__tatami_1_1Matrix.html</anchorfile>
-      <anchor>a0d1cfe54ac26ace77434016b739ec970</anchor>
-      <arglist>(MatrixPointer_ matrix)</arglist>
+      <anchor>a9cf99ba3c30ef55a1a659eafd13d8ed9</anchor>
+      <arglist>(MatrixPointer_ matrix, bool transposed)</arglist>
     </member>
     <member kind="function">
       <type>auto</type>

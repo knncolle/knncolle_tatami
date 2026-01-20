@@ -131,8 +131,8 @@ Collaboration diagram for knncolle_tatami::Matrix&lt; KIndex_, KData_, TValue_, 
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0d1cfe54ac26ace77434016b739ec970" id="r_a0d1cfe54ac26ace77434016b739ec970"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0d1cfe54ac26ace77434016b739ec970">Matrix</a> (MatrixPointer_ matrix)</td></tr>
-<tr class="separator:a0d1cfe54ac26ace77434016b739ec970"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cf99ba3c30ef55a1a659eafd13d8ed9" id="r_a9cf99ba3c30ef55a1a659eafd13d8ed9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9cf99ba3c30ef55a1a659eafd13d8ed9">Matrix</a> (MatrixPointer_ matrix, bool transposed)</td></tr>
+<tr class="separator:a9cf99ba3c30ef55a1a659eafd13d8ed9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6650f0c00587065e1a7c1cefb6ebcb9b" id="r_a6650f0c00587065e1a7c1cefb6ebcb9b"><td class="memItemLeft" align="right" valign="top">KIndex_&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6650f0c00587065e1a7c1cefb6ebcb9b">num_observations</a> () const</td></tr>
 <tr class="separator:a6650f0c00587065e1a7c1cefb6ebcb9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed1f7513d1b250babf70e0ead38520e9" id="r_aed1f7513d1b250babf70e0ead38520e9"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aed1f7513d1b250babf70e0ead38520e9">num_dimensions</a> () const</td></tr>
@@ -161,8 +161,8 @@ class knncolle_tatami::Matrix&lt; KIndex_, KData_, TValue_, TIndex_, MatrixPoint
 </dl>
 <p>Pretty much as it says on the tin - implements a <code><a class="elRef" href="https://libscran.github.io/knncolle/classknncolle_1_1Matrix.html">knncolle::Matrix</a></code> subclass to wrap a <code><a class="elRef" href="https://tatami-inc.github.io/tatami/classtatami_1_1Matrix.html">tatami::Matrix</a></code>. The idea is to enable the use of arbitrary <b>tatami</b> matrix representations in <b>knncolle</b> functions, e.g., to create a search index from a file-backed matrix. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a0d1cfe54ac26ace77434016b739ec970" name="a0d1cfe54ac26ace77434016b739ec970"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d1cfe54ac26ace77434016b739ec970">&#9670;&#160;</a></span>Matrix()</h2>
+<a id="a9cf99ba3c30ef55a1a659eafd13d8ed9" name="a9cf99ba3c30ef55a1a659eafd13d8ed9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cf99ba3c30ef55a1a659eafd13d8ed9">&#9670;&#160;</a></span>Matrix()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -175,8 +175,12 @@ template&lt;typename KIndex_ , typename KData_ , typename TValue_ , typename TIn
         <tr>
           <td class="memname"><a class="el" href="classknncolle__tatami_1_1Matrix.html">knncolle_tatami::Matrix</a>&lt; KIndex_, KData_, TValue_, TIndex_, MatrixPointer_ &gt;::Matrix </td>
           <td>(</td>
-          <td class="paramtype">MatrixPointer_</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span></td><td>)</td>
+          <td class="paramtype">MatrixPointer_</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>transposed</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -188,6 +192,7 @@ template&lt;typename KIndex_ , typename KData_ , typename TValue_ , typename TIn
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">matrix</td><td>Raw or smart pointer to a <code><a class="elRef" href="https://tatami-inc.github.io/tatami/classtatami_1_1Matrix.html">tatami::Matrix</a></code>. </td></tr>
+    <tr><td class="paramname">transposed</td><td>Whether to transpose the matrix during extraction in <b>kmeans</b> functions. If <code>true</code>, <code>new_extractor()</code> will extract rows instead of columns. </td></tr>
   </table>
   </dd>
 </dl>
