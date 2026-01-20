@@ -1,0 +1,10 @@
+var searchData=
+[
+  ['raw_0',['raw',['https://libscran.github.io/knncolle/classknncolle_1_1DistanceMetric.html#a8ce1cf96534fffbc989ae0141cf74ef4',1,'knncolle::DistanceMetric']]],
+  ['report_1',['report',['https://libscran.github.io/knncolle/classknncolle_1_1NeighborQueue.html#a611b8233976b0b5f930deac74c2b68c3',1,'knncolle::NeighborQueue::report(std::vector&lt; Index_ &gt; *output_indices, std::vector&lt; Distance_ &gt; *output_distances, Index_ self)'],['https://libscran.github.io/knncolle/classknncolle_1_1NeighborQueue.html#a8eae6afd23a9b4a3106b64f16e78c852',1,'knncolle::NeighborQueue::report(std::vector&lt; Index_ &gt; *output_indices, std::vector&lt; Distance_ &gt; *output_distances)']]],
+  ['report_5fall_5fneighbors_2',['report_all_neighbors',['https://libscran.github.io/knncolle/namespaceknncolle.html#af24a311775039654985b447c85d03782',1,'knncolle::report_all_neighbors(std::vector&lt; std::pair&lt; Distance_, Index_ &gt; &gt; &amp;all_neighbors, std::vector&lt; Index_ &gt; *output_indices, std::vector&lt; Distance_ &gt; *output_distances, Index_ self)'],['https://libscran.github.io/knncolle/namespaceknncolle.html#ab42206db56aa02366c741249e609465c',1,'knncolle::report_all_neighbors(std::vector&lt; std::pair&lt; Distance_, Index_ &gt; &gt; &amp;all_neighbors, std::vector&lt; Index_ &gt; *output_indices, std::vector&lt; Distance_ &gt; *output_distances)']]],
+  ['reset_3',['reset',['https://libscran.github.io/knncolle/classknncolle_1_1NeighborQueue.html#ae75692355310f09d163bf20b19b3ef36',1,'knncolle::NeighborQueue']]],
+  ['resize_5fcontainer_5fto_5findex_5fsize_4',['resize_container_to_Index_size',['https://tatami-inc.github.io/tatami/namespacetatami.html#a61b43d2b751c7fcca6815f3be929d4d3',1,'tatami']]],
+  ['retrieve_5fcompressed_5fsparse_5fcontents_5',['retrieve_compressed_sparse_contents',['https://tatami-inc.github.io/tatami/namespacetatami.html#a7e0ab534fd3195a57abcb47272d41ded',1,'tatami']]],
+  ['retrieve_5ffragmented_5fsparse_5fcontents_6',['retrieve_fragmented_sparse_contents',['https://tatami-inc.github.io/tatami/namespacetatami.html#a4b4feed54780ff0d6ec18a38a5752f22',1,'tatami']]]
+];
