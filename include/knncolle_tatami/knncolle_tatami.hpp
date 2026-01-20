@@ -4,6 +4,7 @@
 #include <memory>
 #include <type_traits>
 #include <cstddef>
+#include <vector>
 
 #include "tatami/tatami.hpp"
 #include "knncolle/knncolle.hpp"
@@ -71,24 +72,37 @@ template<typename KIndex_, typename KData_, typename TValue_, typename TIndex_, 
 class Matrix final : public knncolle::Matrix<KIndex_, KData_> {
 private:
     MatrixPointer_ my_matrix;
+    KIndex_ my_nobs;
+    std::size_t my_ndim;
+    bool my_transposed;
 
 public:
     /**
      * @param matrix Raw or smart pointer to a `tatami::Matrix`.
+     * @param transposed Whether to transpose the matrix during extraction in **kmeans** functions.
+     * If `true`, `new_extractor()` will extract rows instead of columns.
      */
-    Matrix(MatrixPointer_  matrix) : my_matrix(std::move(matrix)) {
+    Matrix(MatrixPointer_  matrix, bool transposed) : my_matrix(std::move(matrix)), my_transposed(transposed) {
+        TIndex_ cur_nobs;
+        if (my_transposed) {
+            cur_nobs = my_matrix->nrow();
+            my_ndim = my_matrix->ncol(); // cast is guaranteed to be safe as tatami indices can always fit in a size_t.
+        } else {
+            cur_nobs = my_matrix->ncol();
+            my_ndim = my_matrix->nrow();
+        }
+
         // Making sure that we can cast to Index_.
         // tatami extents are guaranteed to be positive and fit in a size_t, so we attest that.
-        sanisizer::cast<KIndex_>(sanisizer::attest_gez(sanisizer::attest_max_by_type<std::size_t>(my_matrix->ncol())));
+        my_nobs = sanisizer::cast<KIndex_>(sanisizer::attest_gez(sanisizer::attest_max_by_type<std::size_t>(cur_nobs)));
     }
 
     KIndex_ num_observations() const {
-        return my_matrix->ncol();
+        return my_nobs;
     }
 
     std::size_t num_dimensions() const {
-        // tatami extents are guaranteed to fit in a size_t, so it's okay.
-        return my_matrix->nrow();
+        return my_ndim;
     }
 
 public:
@@ -100,8 +114,8 @@ public:
      * Override to assist devirtualization.
      */
     auto new_known_extractor() const {
-        auto ext = tatami::consecutive_extractor<false, TValue_, TIndex_>(*my_matrix, false, 0, my_matrix->ncol());
-        return std::make_unique<Extractor<KData_, TValue_, TIndex_> >(std::move(ext), my_matrix->nrow());
+        auto ext = tatami::consecutive_extractor<false, TValue_, TIndex_>(*my_matrix, my_transposed, 0, my_nobs);
+        return std::make_unique<Extractor<KData_, TValue_, TIndex_> >(std::move(ext), my_ndim);
     }
 };
 

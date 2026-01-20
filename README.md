@@ -20,7 +20,7 @@ Just replace the usual `knncolle::SimpleMatrix` with an instance of a `knncolle_
 // Initialize this with an instance of a concrete tatami subclass.
 std::shared_ptr<tatami::Matrix<double, int> > tmat;
 
-knncolle_tatami::Matrix<int, double, double, int> wrapper(std::move(tmat));
+knncolle_tatami::Matrix<int, double, double, int> wrapper(std::move(tmat), /* transposed = */ false);
 knncolle::VptreeBuilder<int, double, double> builder;
 auto index = builder.build_shared(wrapper);
 auto res = knncolle::find_nearest_neighbors(*index, 5);

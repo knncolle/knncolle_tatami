@@ -14,7 +14,7 @@ TEST(Matrix, Simple) {
     std::iota(buffer.begin(), buffer.end(), 0);
 
     auto dmat = std::make_shared<tatami::DenseMatrix<double, int, std::vector<double> > >(NR, NC, buffer, false);
-    knncolle_tatami::Matrix<int, double, double, int> tmat(std::move(dmat));
+    knncolle_tatami::Matrix<int, double, double, int> tmat(std::move(dmat), false);
     EXPECT_EQ(tmat.num_dimensions(), NR);
     EXPECT_EQ(tmat.num_observations(), NC);
 
@@ -34,7 +34,8 @@ TEST(Matrix, DifferentType) {
     std::vector<float> buffer(NR * NC);
     std::iota(buffer.begin(), buffer.end(), 0);
 
-    knncolle_tatami::Matrix<int, double, double, int> tmat(std::make_shared<tatami::DenseMatrix<double, int, std::vector<float> > >(NR, NC, buffer, false));
+    auto dmat = std::make_shared<tatami::DenseMatrix<double, int, std::vector<float> > >(NR, NC, buffer, false);
+    knncolle_tatami::Matrix<int, double, double, int> tmat(std::move(dmat), false);
     EXPECT_EQ(tmat.num_dimensions(), NR);
     EXPECT_EQ(tmat.num_observations(), NC);
 
@@ -55,17 +56,17 @@ TEST(Matrix, Transposed) {
     std::iota(buffer.begin(), buffer.end(), 0);
 
     auto dmat = std::make_shared<tatami::DenseMatrix<double, int, std::vector<double> > >(NR, NC, buffer, true);
-    knncolle_tatami::Matrix<int, double, double, int> tmat(dmat);
-    EXPECT_EQ(tmat.num_dimensions(), NR);
-    EXPECT_EQ(tmat.num_observations(), NC);
+    knncolle_tatami::Matrix<int, double, double, int> tmat(std::move(dmat), true);
+    EXPECT_EQ(tmat.num_dimensions(), NC);
+    EXPECT_EQ(tmat.num_observations(), NR);
 
-    auto ext = dmat->dense_column();
-    std::vector<double> tmp(NR), tmp2(NR);
+    std::vector<double> tmp(NC), tmp2(NC);
     auto work = tmat.new_extractor();
-    for (int c = 0; c < NC; ++c) {
-        ext->fetch(c, tmp.data());
+    for (int r = 0; r < NR; ++r) {
+        auto it = buffer.begin() + static_cast<std::size_t>(r) * static_cast<std::size_t>(NC);
+        std::copy_n(it, NC, tmp.begin());
         auto ptr = work->next();
-        std::copy_n(ptr, NR, tmp2.begin());
+        std::copy_n(ptr, NC, tmp2.begin());
         EXPECT_EQ(tmp, tmp2);
     }
 }
@@ -80,7 +81,7 @@ TEST(Neighbors, Full) {
     }
 
     auto dmat = std::make_shared<tatami::DenseMatrix<double, int, std::vector<double> > >(NR, NC, buffer, false);
-    knncolle_tatami::Matrix<int, double, double, int> tmat(std::move(dmat));
+    knncolle_tatami::Matrix<int, double, double, int> tmat(std::move(dmat), false);
     knncolle::SimpleMatrix<int, double> smat(NR, NC, buffer.data());
     const int k = 10;
 
