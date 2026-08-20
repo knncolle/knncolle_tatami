@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.24)
 
-project(knncolle_tatami
-    VERSION 0.1.0
+project(
+    knncolle_tatami
+    VERSION 0.1.1
     DESCRIPTION "tatami bindings for the k-means library"
-    LANGUAGES CXX)
+    LANGUAGES CXX
+)
 
 add_library(knncolle_tatami INTERFACE)
 add_library(knncolle::knncolle_tatami ALIAS knncolle_tatami)
@@ -20,9 +22,9 @@ option(KNNCOLLE_TATAMI_FETCH_EXTERN "Automatically fetch knncolle_tatami's exter
 if(KNNCOLLE_TATAMI_FETCH_EXTERN)
     add_subdirectory(extern)
 else()
-    find_package(knncolle_knncolle 3.0.0 CONFIG REQUIRED)
-    find_package(ltla_sanisizer 0.1.0 CONFIG REQUIRED)
-    find_package(tatami_tatami 4.0.4 CONFIG REQUIRED)
+    find_package(knncolle_knncolle 3.1.0 CONFIG REQUIRED)
+    find_package(ltla_sanisizer 0.2.0 CONFIG REQUIRED)
+    find_package(tatami_tatami 4.1.0 CONFIG REQUIRED)
 endif()
 
 target_link_libraries(knncolle_tatami INTERFACE knncolle::knncolle ltla::sanisizer tatami::tatami)
