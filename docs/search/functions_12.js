@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wrap_5fshared_5fptr_0',['wrap_shared_ptr',['https://tatami-inc.github.io/tatami/namespacetatami.html#a5a07f7937bfdbbe8e355cba20d7c0c3a',1,'tatami']]]
+  ['vptreebuilder_0',['VptreeBuilder',['https://libscran.github.io/knncolle/classknncolle_1_1VptreeBuilder.html#aad91c7ac9485e1d6aa9f7f9be8323e6e',1,'knncolle::VptreeBuilder::VptreeBuilder(std::shared_ptr&lt; const DistanceMetric_ &gt; metric, VptreeOptions options)'],['https://libscran.github.io/knncolle/classknncolle_1_1VptreeBuilder.html#a13f00af67d227d117fa4b9910861a438',1,'knncolle::VptreeBuilder::VptreeBuilder(std::shared_ptr&lt; const DistanceMetric_ &gt; metric)']]]
 ];
